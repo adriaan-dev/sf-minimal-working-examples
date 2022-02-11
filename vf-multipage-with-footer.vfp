@@ -1,0 +1,113 @@
+<!-- For this example to render properly, you must associate the Visualforce page 
+
+with a valid account record in the URL. 
+
+For example, if 001D000000IRt53 is the account ID, the resulting URL should be: 
+
+https://Salesforce_instance/apex/myPage?id=001D000000IRt53
+
+See the Visualforce Developer's Guide Quick Start Tutorial for more information. -->
+
+<apex:page renderAs="pdf" standardController="Account" showHeader="false" sidebar="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false">
+        <html>
+            <head>
+                <style>
+                    @page {
+                    	size: A4;
+                		margin: 25mm;
+                    	margin-bottom:35mm;
+                    	@bottom-center{
+                    		content: element(footer);
+                    	}
+                    	@top-right {
+                    		content: "Page " counter(page) " of " counter(pages);
+                		}
+                    }
+                    
+                    body {
+                    	position: relative;
+                    }
+                    div.footer {
+                    	font-size:15px;
+                    	display: block;
+                    	position: running(footer);
+                    }
+                    .page-break {
+                    	display:block;
+                    	page-break-after:auto;
+                    }
+                </style>
+            </head>    
+            <body>
+                <div class="page-break">
+                    <table cellspacing = "20" border="0" >
+                        <tr>
+                            <th>Case Number</th><th>Origin</th>
+                            <th>Creator Email</th><th>Status</th>   
+                        </tr>
+                        <apex:repeat var="cases" value="{!Account.Cases}">
+                            <tr>
+                                <td>{!cases.CaseNumber}</td>
+                                
+                                <td>{!cases.Origin}</td>
+                                
+                                <td>{!cases.Contact.email}</td>
+                                
+                                <td>{!cases.Status}</td>   
+                            </tr>    
+                        </apex:repeat>    
+                    </table>
+                </div>
+                
+                <div class="footer">
+                    <table>
+                        <colgroup>
+                            <col style="width: 200px"/>
+                            <col style="width: 600px"/>
+                            <col style="width: 500px"/>
+                            <col style="width: 200px"/>
+                            <col style="width: 200px"/>
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><apex:outputLabel value="Total (Excl)"/></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><apex:outputLabel value="Received by"/></td>
+                                <td><hr/></td>
+                                <td></td>
+                                <td><apex:outputLabel value="Tax"/></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><apex:outputLabel value="Date"/></td>
+                                <td><hr/></td>
+                                <td></td>
+                                <td><apex:outputLabel style="font-weight:600" value="Total (Incl)"/></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><apex:outputLabel value="Signed"/></td>
+                                <td><hr/></td>
+                                <td></td>
+                                <td><apex:outputLabel value="Discount"/></td>
+                                <td>TBC</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><apex:outputLabel style="font-weight:600" value="Total (Incl)"/></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </body>
+        </html>
+
+</apex:page>
